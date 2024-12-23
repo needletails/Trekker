@@ -1,0 +1,85 @@
+# Xcode
+#
+# Build generated
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace
+*.xcuserdatad
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/xcuserdata/*.xcuserdatad
+
+# User-specific files
+*.xcuserdatad
+*.xcuserstate
+*.xcworkspace
+*.xcuserdata
+
+# Swift Package Manager
+#
+# Build artifacts
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods
+#
+# Pods directory
+Pods/
+# CocoaPods generated files
+*.xcworkspace
+*.xcuserdata
+
+# Carthage
+#
+# Build artifacts
+Carthage/Build/
+
+# Fastlane
+#
+# Fastlane files
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Derived data
+DerivedData/
+
+# Archives
+*.xcarchive
+
+# App-specific files
+*.app
+*.ipa
+
+# Other
+*.DS_Store
+*.swp
+*.swo
+*.lock
+*.log
+*.tmp
+*.tmp.*
+*.orig
+*.o
+*.a
+*.so
+*.dSYM
+*.hmap
+*.h
+
+# SwiftPM
+*.build/
+
+# Xcode 11 and later
+*.xcworkspace/xcuserdata/
+*.xcproject/xcuserdata/
+*.xcuserdatad/
+
+# Xcode 12 and later
+*.xcworkspace/xcuserdata/
+*.xcproject/xcuserdata/
+*.xcuserdatad/
+
