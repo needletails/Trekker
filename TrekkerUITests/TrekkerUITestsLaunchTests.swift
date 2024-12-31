@@ -2,7 +2,7 @@
 //  TrekkerUITestsLaunchTests.swift
 //  TrekkerUITests
 //
-//  Created by Cole M on 12/21/24.
+//  Created by NeedleTails App BrewHub on 12/21/24.
 //
 
 import XCTest

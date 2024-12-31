@@ -2,12 +2,13 @@
 //  AuthenticationViewModel.swift
 //  Trekker
 //
-//  Created by Cole M on 12/23/24.
+//  Created by NeedleTails App BrewHub on 12/23/24.
 //
 import SwiftUI
 
 final class AuthenticationViewModel: ObservableObject {
     
+    @Published var user: User = .init(id: UUID(), username: "Bob", metadata: Data())
     @Published var state: RegistrationState = .notRegistered
     var networkDelegate: NetworkManagerDelegate?
     
@@ -42,6 +43,10 @@ final class AuthenticationViewModel: ObservableObject {
             state = .notRegistered
         }
         await networkDelegate?.logout()
+    }
+    
+    func updateUserMetadata(data: Data) async {
+        
     }
     
 }

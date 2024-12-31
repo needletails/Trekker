@@ -2,7 +2,7 @@
 //  SplashView.swift
 //  Trekker
 //
-//  Created by Cole M on 12/23/24.
+//  Created by NeedleTails App BrewHub on 12/23/24.
 //
 
 import SwiftUI

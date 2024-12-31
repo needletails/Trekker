@@ -2,52 +2,40 @@
 //  TourView.swift
 //  Trekker
 //
-//  Created by Cole M on 12/23/24.
+//  Created by NeedleTails App BrewHub on 12/23/24.
 //
 
 import SwiftUI
 
 struct TourView: View {
     
+    @State var showMyTourAdded: TourAdded = .none
+    @State var displayAddedTourView = false
     @State var showProfile = false
+    @EnvironmentObject var toursViewModel: ToursViewModel
     
     // Define different row configurations
     var featuredRow: GridItem = GridItem(.fixed(100))
     var specialRow: GridItem = GridItem(.fixed(300))
     var popularRow: GridItem = GridItem(.fixed(200))
     
-    let tours: [TourItem] = [
-        TourItem(title: "First Tour", type: .featured, size: CGSize(width: 100, height: 150)),
-        TourItem(title: "Second Tour", type: .special, size: CGSize(width: 300, height: 350)),
-        TourItem(title: "Third Tour", type: .popular, size: CGSize(width: 200, height: 250)),
-        TourItem(title: "Fourth Tour", type: .featured, size: CGSize(width: 100, height: 150)),
-        TourItem(title: "Fifth Tour", type: .special, size: CGSize(width: 300, height: 350)),
-    ]
-    
-    var groupedTours: [[TourItem]] {
-        // Group tours by type
-        let groupedDictionary = Dictionary(grouping: tours) { $0.type }
-        // Convert the dictionary values to an array of arrays
-        return TourType.allCases.compactMap { groupedDictionary[$0] }
-    }
-    
     var body: some View {
         NavigationView {
             ScrollView(.vertical) {
                 VStack(spacing: 8) { // Use VStack for rows
-                    ForEach(0..<groupedTours.count, id: \.self) { index in
+                    ForEach(0..<toursViewModel.tours.count, id: \.self) { index in
                         ScrollView(.horizontal) {
                             HStack(spacing: 8) { // Use HStack for items in each row
-                                ForEach(groupedTours[index], id: \.title) { tour in
-                                    NavigationLink(destination: TourDetailView(tour: tour)) {
-                                    HStack {
-                                        Rectangle()
-                                            .fill(Color.blue)
-                                            .cornerRadius(8)
-                                            .frame(width: tour.size.width, height: tour.size.height)
-                                            .overlay(Text(tour.title).foregroundColor(.white))
-                                        Spacer()
-                                    }
+                                ForEach(toursViewModel.tours[index], id: \.title) { tour in
+                                    NavigationLink(destination: TourDetailView(tour: tour, showMyTourAdded: $showMyTourAdded)) {
+                                        HStack {
+                                            Rectangle()
+                                                .fill(Color.blue)
+                                                .cornerRadius(8)
+                                                .frame(width: tour.size.width, height: tour.size.height)
+                                                .overlay(Text(tour.title).foregroundColor(.white))
+                                            Spacer()
+                                        }
                                     }
                                 }
                             }
@@ -76,6 +64,45 @@ struct TourView: View {
             }
             .fullScreenCover(isPresented: $showProfile) {
                 ProfileView()
+            }
+            .fullScreenCover(isPresented: $displayAddedTourView) {
+                switch showMyTourAdded {
+                case .showNewTour(let tourItem):
+                    NavigationView {
+                        TourDetailView(tour: tourItem, showMyTourAdded: $showMyTourAdded)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button(action: {
+                                        showMyTourAdded = .none
+                                        displayAddedTourView = false
+                                    }) {
+                                        Image(systemName: "chevron.left")
+                                    }
+                                }
+                            }
+                    }
+                case .showPurchasedTour(let tourItem):
+                    NavigationView {
+                        PurchasedTourView(tour: tourItem)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button(action: {
+                                        showMyTourAdded = .none
+                                        displayAddedTourView = false
+                                    }) {
+                                        Image(systemName: "chevron.left")
+                                    }
+                                }
+                            }
+                    }
+                default:
+                    EmptyView()
+                }
+            }
+        }
+        .onChange(of: showMyTourAdded) { oldValue, newValue in
+            if newValue != .none {
+                displayAddedTourView = true
             }
         }
     }

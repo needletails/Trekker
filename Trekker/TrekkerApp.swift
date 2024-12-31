@@ -2,7 +2,7 @@
 //  TrekkerApp.swift
 //  Trekker
 //
-//  Created by Cole M on 12/21/24.
+//  Created by NeedleTails App BrewHub on 12/21/24.
 //
 
 import SwiftUI
@@ -11,6 +11,8 @@ import SwiftUI
 struct TrekkerApp: App {
     
     @ObservedObject var authenticationViewModel = AuthenticationViewModel()
+    @ObservedObject var toursViewModel = ToursViewModel()
+    @ObservedObject var messagesViewModel = MessagesViewModel()
     let networkManager = NetworkManager()
     
     var body: some Scene {
@@ -18,6 +20,8 @@ struct TrekkerApp: App {
             ContentView()
                 .background(Color.black)
                 .environmentObject(authenticationViewModel)
+                .environmentObject(toursViewModel)
+                .environmentObject(messagesViewModel)
                 .onAppear {
                     authenticationViewModel.networkDelegate = networkManager
                 }
