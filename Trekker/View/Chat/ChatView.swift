@@ -104,7 +104,9 @@ struct ChatView: View {
             }
             .padding()
             .background(Color.gray)
+#if canImport(UIKit)
             .presentationDetents([.height(UIScreen.main.bounds.height / 8)])
+#endif
         }
     }
     

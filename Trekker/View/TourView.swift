@@ -47,7 +47,7 @@ struct TourView: View {
             }
             .navigationTitle("Tour Packages")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .automatic) {
                     Button(action: {
                         showProfile.toggle()
                     }) {
@@ -62,6 +62,7 @@ struct TourView: View {
                     }
                 }
             }
+#if canImport(UIKit)
             .fullScreenCover(isPresented: $showProfile) {
                 ProfileView()
             }
@@ -99,6 +100,7 @@ struct TourView: View {
                     EmptyView()
                 }
             }
+#endif
         }
         .onChange(of: showMyTourAdded) { oldValue, newValue in
             if newValue != .none {

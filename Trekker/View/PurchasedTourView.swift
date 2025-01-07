@@ -6,6 +6,11 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 struct PurchasedTourView: View {
     var tour: MyTourGroups
@@ -19,6 +24,7 @@ struct PurchasedTourView: View {
     
     @ViewBuilder
     var image: some View {
+#if canImport(UIKit)
         if let tourImage = UIImage(data: tour.tour.tour.imageData) {
             Image(uiImage: tourImage)
                 .resizable()
@@ -28,6 +34,17 @@ struct PurchasedTourView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }
+#elseif canImport(AppKit)
+    if let tourImage = NSImage(data: tour.tour.tour.imageData) {
+        Image(nsImage: tourImage)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+    } else {
+        Image(systemName: "photo.badge.exclamationmark")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+    }
+#endif
     }
     
     var body: some View {
@@ -78,6 +95,7 @@ struct PurchasedTourView: View {
                     .padding(.bottom, 5)
                     .padding(.leading, 5)
                 HStack {
+#if canImport(UIKit)
                     if let guide = guide, let profileImage = UIImage(data: guide.profilePhoto) {
                         Image(uiImage: profileImage) // Assuming you have a profile image
                             .resizable()
@@ -92,6 +110,22 @@ struct PurchasedTourView: View {
                                 Text(String(guide?.nickname.prefix(2) ?? tour.tour.guide.username.prefix(2)))
                             }
                     }
+#elseif canImport(AppKit)
+                    if let guide = guide, let profileImage = NSImage(data: guide.profilePhoto) {
+                        Image(nsImage: profileImage) // Assuming you have a profile image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    } else {
+                        Circle()
+                            .fill(Color.gray)
+                            .frame(width: 40, height: 40)
+                            .overlay {
+                                Text(String(guide?.nickname.prefix(2) ?? tour.tour.guide.username.prefix(2)))
+                            }
+                    }
+#endif
                     Text(guide?.nickname ?? tour.tour.guide.username)
                         .font(.subheadline)
                         .foregroundColor(.gray)
@@ -111,6 +145,7 @@ struct PurchasedTourView: View {
                 ForEach(tour.tour.members, id: \.self) { member in
                     var userMetadata: UserMetadata?
                     HStack {
+#if canImport(UIKit)
                         if let userMetadata = userMetadata, let profileImage = UIImage(data: userMetadata.profilePhoto) {
                             Image(uiImage: profileImage) // Assuming you have a profile image
                                 .resizable()
@@ -125,6 +160,22 @@ struct PurchasedTourView: View {
                                     Text(String(userMetadata?.nickname.prefix(2) ?? member.username.prefix(2)))
                                 }
                         }
+#elseif canImport(AppKit)
+                        if let userMetadata = userMetadata, let profileImage = NSImage(data: userMetadata.profilePhoto) {
+                            Image(nsImage: profileImage) // Assuming you have a profile image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                        } else {
+                            Circle()
+                                .fill(Color.gray)
+                                .frame(width: 40, height: 40)
+                                .overlay {
+                                    Text(String(userMetadata?.nickname.prefix(2) ?? member.username.prefix(2)))
+                                }
+                        }
+#endif
                         Text(userMetadata?.nickname ?? member.username)
                             .font(.body)
                     }
@@ -189,6 +240,7 @@ struct PurchasedTourView: View {
             }
             .padding()
         }
+#if canImport(UIKit)
         .fullScreenCover(isPresented: $showChatView) {
             NavigationView {
                 ChatView(chatType: chatType)
@@ -203,5 +255,6 @@ struct PurchasedTourView: View {
                     }
             }
         }
+#endif
     }
 }

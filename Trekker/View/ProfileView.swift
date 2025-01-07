@@ -43,9 +43,13 @@ struct ProfileView: View {
     }
     
     func openWebsite(address: String) {
+#if canImport(UIKit)
         if let url = URL(string: address), UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+#elseif canImport(AppKit)
+        
+#endif
     }
     
     var body: some View {
@@ -92,6 +96,7 @@ struct ProfileView: View {
                     .listRowBackground(Color.black)
                 }
             }
+#if canImport(UIKit)
             .fullScreenCover(isPresented: $displayAddedTourView) {
                 switch showMyTourAdded {
                 case .showPurchasedTour(let tourItem):
@@ -112,6 +117,7 @@ struct ProfileView: View {
                     EmptyView()
                 }
             }
+#endif
             .onChange(of: showMyTourAdded) { oldValue, newValue in
                 if newValue != .none {
                     displayAddedTourView = true
@@ -119,7 +125,7 @@ struct ProfileView: View {
             }
             .navigationTitle("Profile")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .automatic) {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {

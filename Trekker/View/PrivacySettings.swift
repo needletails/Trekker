@@ -22,7 +22,9 @@ struct PrivacySettings: View {
                 }
             }
             .navigationTitle("Privacy Settings")
+#if canImport(UIKit)
             .navigationBarTitleDisplayMode(.inline)
+#endif
         }
     }
 }

@@ -6,7 +6,11 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(macOS)
+import AppKit
+#endif
 
 enum TourAdded: Equatable {
     case showNewTour(TourItem), showPurchasedTour(MyTourGroups), none
@@ -14,8 +18,11 @@ enum TourAdded: Equatable {
 
 struct TourDetailView: View {
     var tour: TourItem
-    
+#if canImport(UIKit)
     @State var tourImage: UIImage?
+#elseif canImport(macOS)
+    @State var tourImage: NSImage?
+#endif
     @State var showAddedTour: Bool = false
     @State var isPurchased: Bool = false
     
@@ -26,6 +33,7 @@ struct TourDetailView: View {
     
     @ViewBuilder
     var image: some View {
+#if canImport(UIKit)
         if let tourImage = UIImage(data: tour.imageData) {
             Image(uiImage: tourImage)
                 .resizable()
@@ -35,6 +43,17 @@ struct TourDetailView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }
+#elseif canImport(macOS)
+        if let tourImage = NSImage(data: tour.imageData) {
+            Image(uiImage: tourImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else {
+            Image(systemName: "photo.badge.exclamationmark")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        }
+#endif
     }
     
     var body: some View {
