@@ -102,8 +102,7 @@ final class ToursViewModel: ObservableObject {
     init() {
         self.tours = ToursViewModel.groupedTours
         
-        let guide = User(id: UUID(), username: "JR", metadata: Data())
-        
+        let guide = User(id: UUID(), username: "JR", isAdmin: true)
         for tour in ToursViewModel.toursData {
             tourGroups.append(.init(tour: tour, groupName: "\(guide.username)_\(tour.title)_\(tour.scheduled)", members: [], guide: guide))
         }

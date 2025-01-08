@@ -24,6 +24,7 @@ struct MyTours: Codable, Equatable, Hashable {
 struct ProfileView: View {
    
     @State var showMyTourAdded: TourAdded = .none
+    @State var showDeleteAccountAlert = false
     @State var displayAddedTourView = false
     @EnvironmentObject var authenticationViewModel: AuthenticationViewModel
     @EnvironmentObject var toursViewModel: ToursViewModel
@@ -95,6 +96,36 @@ struct ProfileView: View {
                     }
                     .listRowBackground(Color.black)
                 }
+                Section {
+                    Button {
+                        showDeleteAccountAlert.toggle()
+                    } label: {
+                        Text("Delete Account")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .listRowBackground(Color.black)
+                }
+            }
+            .alert("Are you sure that you want to delete you account?", isPresented: $showDeleteAccountAlert) {
+                VStack {
+                    Button("DELETE", role: .destructive) {
+                        Task.detached {
+                            await authenticationViewModel.deleteAccount()
+                            await MainActor.run {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            } message: {
+                Text("Please check authentication details")
             }
 #if canImport(UIKit)
             .fullScreenCover(isPresented: $displayAddedTourView) {

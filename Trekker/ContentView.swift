@@ -9,7 +9,7 @@ import SwiftUI
 
 
 enum RegistrationState {
-    case isRegistered, notRegistered, registering
+    case authenticated, unauthenticated, notRegistered, registering
 }
 
 struct ContentView: View {
@@ -19,9 +19,9 @@ struct ContentView: View {
     
     var body: some View {
         switch authenticationViewModel.state {
-        case .isRegistered:
+        case .authenticated:
             TourView()
-        case .notRegistered:
+        case .notRegistered, .unauthenticated:
             AuthenticationView()
         case .registering:
             EmptyView()

@@ -182,8 +182,10 @@ struct PurchasedTourView: View {
                     .padding(.vertical, 2)
                     .padding(.leading, 15)
                     .onAppear {
-                        let decoded = try? JSONDecoder().decode(UserMetadata.self, from: member.metadata)
-                        userMetadata = decoded
+                        if let metadata = member.metadata {
+                            let decoded = try? JSONDecoder().decode(UserMetadata.self, from: metadata)
+                            userMetadata = decoded
+                        }
                     }
                     
                 }
@@ -215,9 +217,10 @@ struct PurchasedTourView: View {
             .padding()
         }
         .onAppear {
-            let metadata = tour.tour.guide.metadata
-            let decoded = try? JSONDecoder().decode(UserMetadata.self, from: metadata)
-            self.guide = decoded
+            if let metadata = tour.tour.guide.metadata {
+                let decoded = try? JSONDecoder().decode(UserMetadata.self, from: metadata)
+                self.guide = decoded
+            }
         }
         .sheet(isPresented: $showDetails) {
             ZStack {

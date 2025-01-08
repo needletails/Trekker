@@ -118,10 +118,9 @@ struct EditProfile: View {
         }
         .onAppear {
             do {
-//                if
-                let user = authenticationViewModel.user 
+                if let user = authenticationViewModel.user, let metadata = user.metadata {
                     self.username = user.username
-                    let metadata = try JSONDecoder().decode(UserMetadata.self, from: user.metadata)
+                    let metadata = try JSONDecoder().decode(UserMetadata.self, from: metadata)
 #if canImport(UIKit)
                     guard let image = UIImage(data: metadata.profilePhoto) else { return }
                     self.nickname = metadata.nickname
@@ -131,7 +130,7 @@ struct EditProfile: View {
                 self.nickname = metadata.nickname
                 self.profilePhoto = Image(nsImage: image)
 #endif
-//                }
+                }
             } catch {
                 print(error)
             }

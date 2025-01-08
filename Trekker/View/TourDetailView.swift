@@ -100,7 +100,9 @@ struct TourDetailView: View {
                             showAddedTour = false
                             presentationMode.wrappedValue.dismiss()
                     } else {
-                        toursViewModel.addTour(tour, user: authenticationViewModel.user)
+                        if let user = authenticationViewModel.user {
+                            toursViewModel.addTour(tour, user: user)
+                        }
                         showAddedTour = true
                     }
                 }) {
